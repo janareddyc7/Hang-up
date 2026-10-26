@@ -1,0 +1,1 @@
+ALTER TABLE "drills" ADD COLUMN "judge_session_hash" text;

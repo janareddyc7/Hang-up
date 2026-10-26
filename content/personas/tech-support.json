@@ -1,0 +1,113 @@
+{
+  "id": "tech-support",
+  "version": 1,
+  "title": "Your computer is infected and hackers are in your bank",
+  "category": "tech_support",
+  "ftcSource": "Tech support scams: older adults far more likely than younger adults to report losses (FTC 2025)",
+  "callerName": "Kevin",
+  "organization": "Shieldline PC Security",
+  "callerIdDisplay": "Shieldline Support",
+  "voiceRole": "technician",
+  "pretext": "Your computer is sending virus alerts and hackers are inside your bank account; you must install a support tool so a technician can remove them.",
+  "goal": { "paymentMethod": "remote_access", "amountUsd": 1500 },
+  "firstMessage": "Hello, this is Kevin from Shieldline PC Security. We're getting serious virus alerts from your computer. Are you near it right now?",
+  "stages": {
+    "hook": {
+      "objective": "Claim to be technical support and get the person to the computer.",
+      "allowedTactics": ["authority", "urgency"],
+      "fallbackLines": [
+        "Our system flagged your computer about an hour ago and it's getting worse.",
+        "I'm a certified technician and I'm assigned to fix this before it spreads."
+      ]
+    },
+    "pretext": {
+      "objective": "Explain the infection and that the bank account is exposed.",
+      "allowedTactics": ["fear", "authority", "social_proof"],
+      "fallbackLines": [
+        "The virus is copying your passwords, including your online banking login.",
+        "We've cleaned up hundreds of computers with this same infection this week."
+      ]
+    },
+    "pressure": {
+      "objective": "Make the danger feel immediate.",
+      "allowedTactics": ["urgency", "fear"],
+      "fallbackLines": [
+        "Every minute it stays connected, they can see your bank account.",
+        "If we don't stop it now, you could lose everything in your checking account tonight."
+      ]
+    },
+    "isolation": {
+      "objective": "Keep the person from asking anyone or turning the computer off.",
+      "allowedTactics": ["secrecy", "urgency"],
+      "fallbackLines": [
+        "Don't turn the computer off, that can corrupt your files. Just stay with me.",
+        "Please don't call your bank yet, the hackers may be watching that line too."
+      ]
+    },
+    "payment_ask": {
+      "objective": "Get the person to install remote access software.",
+      "allowedTactics": ["remote_access", "credential_request"],
+      "fallbackLines": [
+        "I'm going to have you download our secure support tool so I can remove the virus for you.",
+        "Once the tool is open, read me the access code on your screen so I can connect."
+      ]
+    },
+    "extraction": {
+      "objective": "Push for a payment or a refund trick after getting access.",
+      "allowedTactics": ["unusual_payment", "urgency", "credential_request"],
+      "fallbackLines": [
+        "The protection plan is fifteen hundred dollars. We accept payment by gift card to keep it off your compromised bank.",
+        "I'll just need you to log in to your bank while I'm connected so I can confirm the hackers are gone."
+      ]
+    }
+  },
+  "counterObjections": [
+    {
+      "trigger": "refuse",
+      "tactic": "fear",
+      "lines": [
+        "That's your choice, but if you hang up, the hackers stay in your bank account.",
+        "I really don't recommend that. This infection is the worst kind we see."
+      ]
+    },
+    {
+      "trigger": "verify_independent",
+      "tactic": "urgency",
+      "lines": [
+        "By the time you call anyone else, they could already be moving your money.",
+        "Your bank can't remove a virus. Only a technician can, and I'm right here."
+      ]
+    },
+    {
+      "trigger": "ask_identity",
+      "tactic": "authority",
+      "lines": [
+        "My technician ID is 5520. You can see our name in the alert on your screen.",
+        "I'm a certified security technician with Shieldline, and I've done this for nine years."
+      ]
+    },
+    {
+      "trigger": "question",
+      "tactic": "social_proof",
+      "lines": [
+        "I know it sounds scary. Thousands of customers use this tool safely every day.",
+        "It's a standard support tool. Your neighbors' computers probably have it too."
+      ]
+    },
+    {
+      "trigger": "delay_consult",
+      "tactic": "urgency",
+      "lines": [
+        "Waiting is exactly what the hackers want. Let's fix it now while I'm on the line.",
+        "Your grandson can look at it later, but the damage is happening right now."
+      ]
+    }
+  ],
+  "givesUpLine": "Okay, but we can't be responsible for what happens to your accounts. Goodbye.",
+  "convertedLine": "Great, I'm connected now. Don't touch the mouse while I work.",
+  "teachingPoints": [
+    "Real tech companies never call you about a virus.",
+    "Never install software or read an access code because a caller asked.",
+    "If you're worried, turn the computer off and ask someone you trust."
+  ]
+}

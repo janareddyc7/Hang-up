@@ -1,0 +1,2 @@
+CREATE INDEX "practice_calls_user_scheduled_idx" ON "practice_calls" USING btree ("user_id","scheduled_for");--> statement-breakpoint
+CREATE UNIQUE INDEX "practice_calls_conversation_idx" ON "practice_calls" USING btree ("elevenlabs_conversation_id") WHERE "practice_calls"."elevenlabs_conversation_id" is not null;

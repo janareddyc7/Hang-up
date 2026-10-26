@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX "move_labels_turn_id_unique" ON "move_labels" USING btree ("turn_id");

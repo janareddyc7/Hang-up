@@ -1,0 +1,12 @@
+{
+  "adultReviewed": false,
+  "consentVersion": "pilot-v1",
+  "consentText": "Taking part is voluntary. This pilot compares fictional practice calls before and after four weeks of practice, with a follow-up two weeks later. It is not a medical assessment or proof that you are safe from scams. No real financial details are needed. Authorized study administrators can export your survey totals and practice scores under a random participant ID. You can leave the pilot and delete your pilot responses at any time. Your ordinary account and practice history remain available.",
+  "citation": "James, Boyle and Bennett (2014), Journal of Elder Abuse and Neglect. Administrator must verify the source and scoring before enabling enrollment.",
+  "sourceUrl": "",
+  "minimum": 1,
+  "maximum": 5,
+  "lowLabel": "",
+  "highLabel": "",
+  "items": []
+}

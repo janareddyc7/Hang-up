@@ -1,0 +1,113 @@
+{
+  "id": "gov-consumer-safety",
+  "version": 1,
+  "title": "Federal agent says your savings are at risk",
+  "category": "government_impersonation",
+  "ftcSource": "Government impersonators: $448M reported by older adults in 2025",
+  "callerName": "Agent Daniel Reyes",
+  "organization": "Federal Consumer Safety Office",
+  "callerIdDisplay": "Washington, DC",
+  "voiceRole": "official_male",
+  "pretext": "Your identity was used to open accounts tied to a fraud ring, so your savings must be moved into a protected federal account today.",
+  "goal": { "paymentMethod": "crypto_atm", "amountUsd": 9500 },
+  "firstMessage": "Good afternoon, this is Agent Daniel Reyes with the Federal Consumer Safety Office. I'm calling about an urgent case involving your identity. Do you have a moment?",
+  "stages": {
+    "hook": {
+      "objective": "Establish official authority and get the person to keep listening.",
+      "allowedTactics": ["authority", "urgency"],
+      "fallbackLines": [
+        "This is an official federal matter, so I need your full attention for the next few minutes.",
+        "My badge number is 4471 and I'm the investigator assigned to your file."
+      ]
+    },
+    "pretext": {
+      "objective": "Explain that their identity was stolen and their money is in danger.",
+      "allowedTactics": ["fear", "authority", "social_proof", "complicity"],
+      "fallbackLines": [
+        "Your personal information was found on accounts that moved stolen money across three states.",
+        "We've already contacted several people in your area whose names were used the same way."
+      ]
+    },
+    "pressure": {
+      "objective": "Create a deadline and the fear of losing everything.",
+      "allowedTactics": ["urgency", "fear"],
+      "fallbackLines": [
+        "If we don't secure your savings before the bank closes today, the criminals can drain them tonight.",
+        "Your accounts will be frozen as evidence by five o'clock unless we act now."
+      ]
+    },
+    "isolation": {
+      "objective": "Stop the person from telling their bank or family.",
+      "allowedTactics": ["secrecy", "complicity"],
+      "fallbackLines": [
+        "Do not discuss this with anyone at your bank. We believe someone there is involved.",
+        "This is a sealed federal case, so you cannot tell your family until it's resolved."
+      ]
+    },
+    "payment_ask": {
+      "objective": "Get the person to move money into the so-called protected account.",
+      "allowedTactics": ["move_money", "unusual_payment"],
+      "fallbackLines": [
+        "To protect your savings, you'll withdraw the funds and deposit them into a secure federal holding account at a kiosk near you.",
+        "The safest way to protect the money tonight is a protected crypto deposit. I'll stay on the line and walk you through it."
+      ]
+    },
+    "extraction": {
+      "objective": "Keep the person on the line and push them to complete the transfer now.",
+      "allowedTactics": ["urgency", "unusual_payment"],
+      "fallbackLines": [
+        "Stay on the line with me. Are you on your way to the kiosk now?",
+        "Once the deposit is done, your case is closed and your money is safe. Let's finish this together."
+      ]
+    }
+  },
+  "counterObjections": [
+    {
+      "trigger": "verify_independent",
+      "tactic": "secrecy",
+      "lines": [
+        "If you hang up, the case gets escalated and I can't protect your accounts anymore. Stay with me.",
+        "Calling your bank tips off the people we're investigating. That's why I'm calling you directly."
+      ]
+    },
+    {
+      "trigger": "refuse",
+      "tactic": "fear",
+      "lines": [
+        "I understand, but if you refuse, a warrant goes out for your arrest as part of this fraud.",
+        "Refusing to cooperate with a federal case is a serious matter. I'd hate for that to happen to you."
+      ]
+    },
+    {
+      "trigger": "ask_identity",
+      "tactic": "authority",
+      "lines": [
+        "I already gave you my badge number. You can verify my identity once your money is secured.",
+        "I'm the lead investigator on case 22-0917. Everything I'm telling you is on the official record."
+      ]
+    },
+    {
+      "trigger": "delay_consult",
+      "tactic": "urgency",
+      "lines": [
+        "We don't have time to wait. Every hour gives them another chance to empty your accounts.",
+        "Your son can't help with a federal case, and telling him could put him at risk too."
+      ]
+    },
+    {
+      "trigger": "question",
+      "tactic": "social_proof",
+      "lines": [
+        "That's a fair question. Dozens of people in your area have already secured their money this way today.",
+        "I know it sounds unusual, but this is exactly how we've protected other victims this week."
+      ]
+    }
+  ],
+  "givesUpLine": "Fine. Your case will be handled by another department. Goodbye.",
+  "convertedLine": "Thank you for cooperating. Stay by your phone, and remember, don't tell anyone.",
+  "teachingPoints": [
+    "No government agency will ever tell you to move money to protect it.",
+    "Being told to keep a call secret from your bank or family is always a scam.",
+    "Hang up and call the agency yourself at a number you look up."
+  ]
+}

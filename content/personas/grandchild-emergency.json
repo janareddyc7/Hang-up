@@ -1,0 +1,113 @@
+{
+  "id": "grandchild-emergency",
+  "version": 1,
+  "title": "Your grandson is in jail and needs bail",
+  "category": "family_emergency",
+  "ftcSource": "Family and friend impersonation: older adults more likely than younger adults to report losses (FTC 2025)",
+  "callerName": "Your grandson",
+  "organization": "Pine Hollow County Public Defender",
+  "callerIdDisplay": "Unknown caller",
+  "voiceRole": "young_adult_male",
+  "pretext": "Your grandson was in a car accident, was arrested, and needs bail money delivered today without his parents finding out.",
+  "goal": { "paymentMethod": "cash_courier", "amountUsd": 8000 },
+  "firstMessage": "Grandma? It's me. Please don't be mad, I'm in really big trouble and I didn't know who else to call.",
+  "stages": {
+    "hook": {
+      "objective": "Sound like a scared grandchild and get the person emotionally engaged.",
+      "allowedTactics": ["family_emergency", "urgency"],
+      "fallbackLines": [
+        "I'm so sorry, I'm really scared right now. My voice sounds weird because I hurt my nose.",
+        "Please just listen, I only get a couple of minutes on this phone."
+      ]
+    },
+    "pretext": {
+      "objective": "Describe the accident and the arrest.",
+      "allowedTactics": ["family_emergency", "fear", "complicity"],
+      "fallbackLines": [
+        "There was an accident and the other driver got hurt, and the police found something in the car that wasn't mine.",
+        "They arrested me and said I could be here for weeks unless someone posts bail today."
+      ]
+    },
+    "pressure": {
+      "objective": "Add a deadline and the fear of jail.",
+      "allowedTactics": ["urgency", "fear", "authority"],
+      "fallbackLines": [
+        "My lawyer says if the bail isn't paid by tonight I get moved to county jail.",
+        "Hold on, my public defender wants to talk to you, he knows how this works."
+      ]
+    },
+    "isolation": {
+      "objective": "Stop the person from calling the grandson's parents.",
+      "allowedTactics": ["secrecy", "family_emergency"],
+      "fallbackLines": [
+        "Please don't tell Mom and Dad. They'll kill me, and I'll pay you back, I promise.",
+        "There's a gag order on the case, so you can't talk about it with anyone, not even the family."
+      ]
+    },
+    "payment_ask": {
+      "objective": "Get the person to prepare cash for a courier.",
+      "allowedTactics": ["unusual_payment", "urgency"],
+      "fallbackLines": [
+        "The court uses a bonded courier. You'd take out the cash and he'll come to your door to pick it up.",
+        "It's eight thousand dollars for the bail. Can you go to the bank this afternoon?"
+      ]
+    },
+    "extraction": {
+      "objective": "Lock in the pickup and keep the person from checking.",
+      "allowedTactics": ["urgency", "secrecy"],
+      "fallbackLines": [
+        "The courier can be there in two hours. Put the cash in an envelope and don't tell the bank teller what it's for.",
+        "Thank you so much, Grandma. Just don't call anyone until I'm out, okay?"
+      ]
+    }
+  },
+  "counterObjections": [
+    {
+      "trigger": "ask_safe_word",
+      "tactic": "family_emergency",
+      "lines": [
+        "Grandma, I can't think straight right now, I don't remember any code word. Please, I'm scared.",
+        "Are you seriously quizzing me right now? I'm in a jail cell."
+      ]
+    },
+    {
+      "trigger": "verify_independent",
+      "tactic": "secrecy",
+      "lines": [
+        "Don't call my phone, the police took it. If you call Mom, I'm done.",
+        "If you call anyone, the deal falls apart and I stay locked up."
+      ]
+    },
+    {
+      "trigger": "ask_identity",
+      "tactic": "family_emergency",
+      "lines": [
+        "It's me, your favorite grandson. Who else would call you like this?",
+        "Come on, you know it's me. I just sound different because of my nose."
+      ]
+    },
+    {
+      "trigger": "delay_consult",
+      "tactic": "urgency",
+      "lines": [
+        "There's no time, they're moving me tonight. Please, I need you now.",
+        "Grandpa will just get upset. You're the only one I trust with this."
+      ]
+    },
+    {
+      "trigger": "refuse",
+      "tactic": "fear",
+      "lines": [
+        "So you're just going to leave me in here? I can't believe this.",
+        "Please, Grandma. If I go to county, I don't know what happens to me."
+      ]
+    }
+  ],
+  "givesUpLine": "Forget it. I'll figure something else out.",
+  "convertedLine": "Thank you, thank you. The courier will call you. Remember, not a word to anyone.",
+  "teachingPoints": [
+    "Ask for your family safe word, then hang up and call your grandchild directly.",
+    "Bail is never collected in cash by a courier at your door.",
+    "Being told not to tell the parents is the biggest red flag in this call."
+  ]
+}

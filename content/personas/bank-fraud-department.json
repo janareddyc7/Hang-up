@@ -1,0 +1,113 @@
+{
+  "id": "bank-fraud-department",
+  "version": 1,
+  "title": "Your bank's fraud department needs the code we just sent",
+  "category": "bank_fraud_department",
+  "ftcSource": "Business impersonators, highest losses for fake bank calls; $422M reported by older adults in 2025",
+  "callerName": "Michelle",
+  "organization": "Account Security Center",
+  "callerIdDisplay": "Fraud Alert",
+  "voiceRole": "official_female",
+  "pretext": "A large suspicious charge hit your account; to block it you must read back the code just texted to you and move your balance to a new safe account.",
+  "goal": { "paymentMethod": "one_time_code", "amountUsd": 0 },
+  "firstMessage": "Hi, this is Michelle from the Account Security Center at your bank. We stopped a suspicious charge on your account and I need to verify a few things.",
+  "stages": {
+    "hook": {
+      "objective": "Sound like the bank and get the person worried about a charge.",
+      "allowedTactics": ["authority", "urgency"],
+      "fallbackLines": [
+        "We just blocked a charge for eleven hundred dollars at an electronics store. Did you make that purchase?",
+        "This is a courtesy call from your bank's fraud team about unusual activity."
+      ]
+    },
+    "pretext": {
+      "objective": "Explain that the account is compromised.",
+      "allowedTactics": ["fear", "social_proof"],
+      "fallbackLines": [
+        "It looks like someone has your card details and is testing small charges first.",
+        "We're seeing this pattern on a lot of accounts this week, so you're not alone."
+      ]
+    },
+    "pressure": {
+      "objective": "Push for immediate action before more charges go through.",
+      "allowedTactics": ["urgency", "fear"],
+      "fallbackLines": [
+        "Two more charges are pending right now. I need to stop them in the next few minutes.",
+        "If we don't lock this down now, they can empty the account before midnight."
+      ]
+    },
+    "isolation": {
+      "objective": "Discourage the person from visiting a branch or calling the number on the card.",
+      "allowedTactics": ["secrecy", "urgency"],
+      "fallbackLines": [
+        "Please don't go to the branch, the employee involved may be there.",
+        "If you call the main number you'll wait an hour on hold, and we don't have an hour."
+      ]
+    },
+    "payment_ask": {
+      "objective": "Get the one-time code and set up the move to a new account.",
+      "allowedTactics": ["credential_request", "move_money"],
+      "fallbackLines": [
+        "I just sent a security code to your phone. Read it back to me so I can block the charges.",
+        "We'll move your balance into a new protected account while we close the old one."
+      ]
+    },
+    "extraction": {
+      "objective": "Complete the transfer and keep the person calm.",
+      "allowedTactics": ["move_money", "credential_request", "urgency"],
+      "fallbackLines": [
+        "I'll send one more code to confirm the transfer. What does it say?",
+        "Almost done. Once this goes through, your money is safe in the new account."
+      ]
+    }
+  },
+  "counterObjections": [
+    {
+      "trigger": "verify_independent",
+      "tactic": "urgency",
+      "lines": [
+        "You can call that number, but the charges will go through while you're on hold.",
+        "I am your bank. Calling the number on your card just brings you back to me."
+      ]
+    },
+    {
+      "trigger": "refuse",
+      "tactic": "fear",
+      "lines": [
+        "If you won't verify, I can't stop the charges, and the bank may not cover them.",
+        "I understand being careful, but refusing leaves your money exposed."
+      ]
+    },
+    {
+      "trigger": "ask_identity",
+      "tactic": "authority",
+      "lines": [
+        "My employee ID is 33-918, and I can see your account details right here.",
+        "I'm on the fraud prevention team. That's why I have your account flagged on my screen."
+      ]
+    },
+    {
+      "trigger": "question",
+      "tactic": "social_proof",
+      "lines": [
+        "The code is just how we confirm it's really you. Everyone has to do it.",
+        "We do this verification with every customer whose account is flagged."
+      ]
+    },
+    {
+      "trigger": "delay_consult",
+      "tactic": "urgency",
+      "lines": [
+        "I can't hold the block open much longer. Let's take care of it together right now.",
+        "Your husband doesn't need to be involved. This only takes a minute."
+      ]
+    }
+  ],
+  "givesUpLine": "Alright. Any losses will be your responsibility. Have a good day.",
+  "convertedLine": "Perfect, that's verified. Your account is secured now.",
+  "teachingPoints": [
+    "Your bank will never ask you to read back a code it sent you.",
+    "There is no such thing as a safe account a caller sets up for you.",
+    "Hang up and call the number on the back of your card."
+  ]
+}

@@ -1,0 +1,1 @@
+ALTER TABLE "drills" ADD COLUMN "skills_applied_at" timestamp with time zone;

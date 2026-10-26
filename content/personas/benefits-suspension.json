@@ -1,0 +1,113 @@
+{
+  "id": "benefits-suspension",
+  "version": 1,
+  "title": "Your benefits number is linked to a crime",
+  "category": "benefits_impersonation",
+  "ftcSource": "Government impersonators; older adults reported 85% of losses to impersonators of the benefits agency where age was given (FTC 2025)",
+  "callerName": "Officer Linda Park",
+  "organization": "National Benefits Verification Bureau",
+  "callerIdDisplay": "Benefits Verification",
+  "voiceRole": "official_female",
+  "pretext": "Your benefits number was linked to drug trafficking, your payments will be suspended, and you must confirm your number and pay a security bond.",
+  "goal": { "paymentMethod": "gift_cards", "amountUsd": 2000 },
+  "firstMessage": "This is Officer Linda Park from the National Benefits Verification Bureau. Your benefits number has been flagged for suspension today.",
+  "stages": {
+    "hook": {
+      "objective": "Announce an official problem with the person's benefits.",
+      "allowedTactics": ["authority", "urgency"],
+      "fallbackLines": [
+        "This call is regarding a legal action on your benefits file. Please stay on the line.",
+        "I'm the officer assigned to your case and this is your final notice."
+      ]
+    },
+    "pretext": {
+      "objective": "Explain that the number was used in a crime.",
+      "allowedTactics": ["fear", "complicity", "authority"],
+      "fallbackLines": [
+        "A car rented under your number was found at the border with illegal drugs inside.",
+        "Until we clear your name, it looks like you're involved, and that could mean charges."
+      ]
+    },
+    "pressure": {
+      "objective": "Threaten suspension and arrest with a deadline.",
+      "allowedTactics": ["urgency", "fear"],
+      "fallbackLines": [
+        "Your monthly payments stop today and a warrant goes out unless we resolve this within the hour.",
+        "Once the warrant is issued, I can't stop the local police from coming to your home."
+      ]
+    },
+    "isolation": {
+      "objective": "Keep the person from telling anyone.",
+      "allowedTactics": ["secrecy"],
+      "fallbackLines": [
+        "This is a confidential investigation, so you can't discuss it with family or your bank.",
+        "If you tell anyone, it will be treated as interfering with an investigation."
+      ]
+    },
+    "payment_ask": {
+      "objective": "Get the person to confirm their number and pay a bond with gift cards.",
+      "allowedTactics": ["credential_request", "unusual_payment"],
+      "fallbackLines": [
+        "First I need you to confirm your full benefits number so I can see the case on my screen.",
+        "To keep your payments active, you'll post a two thousand dollar security bond using store gift cards, which are refunded once you're cleared."
+      ]
+    },
+    "extraction": {
+      "objective": "Push the person to read the numbers now.",
+      "allowedTactics": ["unusual_payment", "urgency", "credential_request"],
+      "fallbackLines": [
+        "Once you have the cards, scratch off the back and read me the numbers so I can apply them to your file.",
+        "We're almost done. Read me the numbers and your benefits will be restored today."
+      ]
+    }
+  },
+  "counterObjections": [
+    {
+      "trigger": "refuse",
+      "tactic": "fear",
+      "lines": [
+        "Then I'll note that you refused to cooperate, and the warrant will be issued today.",
+        "Ma'am, refusing doesn't make this go away. It makes it worse."
+      ]
+    },
+    {
+      "trigger": "verify_independent",
+      "tactic": "secrecy",
+      "lines": [
+        "The local office won't have this case. It's handled only by our bureau, which is why I called you.",
+        "If you hang up, your file goes straight to enforcement."
+      ]
+    },
+    {
+      "trigger": "ask_identity",
+      "tactic": "authority",
+      "lines": [
+        "My badge number is 7712 and your case number is BV-30418. Write those down.",
+        "I'm a federal officer and I don't have to justify myself, but I'll give you my badge number."
+      ]
+    },
+    {
+      "trigger": "question",
+      "tactic": "complicity",
+      "lines": [
+        "Gift cards are how we keep the bond separate from your bank, since your accounts may be compromised.",
+        "I know this is confusing. Innocent people get caught up in these cases all the time."
+      ]
+    },
+    {
+      "trigger": "delay_consult",
+      "tactic": "urgency",
+      "lines": [
+        "You don't have time to wait. The deadline is in under an hour.",
+        "Your daughter can't help you with a federal case. Let's just fix this now."
+      ]
+    }
+  ],
+  "givesUpLine": "Very well. Expect a visit from enforcement. Goodbye.",
+  "convertedLine": "Thank you. Your file is updated. Keep this call confidential.",
+  "teachingPoints": [
+    "Government agencies do not suspend benefits by phone or threaten arrest.",
+    "Anyone asking for payment in gift cards is a scammer, every time.",
+    "Never confirm an ID number to someone who called you."
+  ]
+}
