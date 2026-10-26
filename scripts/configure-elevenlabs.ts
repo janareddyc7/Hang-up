@@ -29,7 +29,8 @@ async function main() {
   const patch = {
     conversation_config: {
       agent: {
-        first_message: "This is a fictional Hang Up practice call. Please start this call from the Hang Up app.",
+        first_message: "{{first_message}}",
+        dynamic_variables: { dynamic_variable_placeholders: { first_message: "This is a fictional Hang Up practice call. Please start this call from the Hang Up app." } },
         prompt: {
           backup_llm_config: { preference: "disabled" },
           built_in_tools: { end_call: { type: "system", name: "end_call", description: "", params: { system_tool_type: "end_call" } } },

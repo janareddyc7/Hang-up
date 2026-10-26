@@ -199,7 +199,6 @@ export function CallExperience(props: {
         dynamicVariables: { drill_id: result.drillId, first_message: result.firstMessage },
         textOnly: asText,
         overrides: {
-          agent: { firstMessage: result.firstMessage },
           tts: { voiceId: result.voiceId, speed: props.speechRate },
         },
         onConnect: ({ conversationId: id }) => {

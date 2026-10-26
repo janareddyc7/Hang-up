@@ -58,8 +58,8 @@ sequenceDiagram
   A->>D: createDrill() saves state, wallet, first scammer turn
   A->>E: GET /v1/convai/conversation/token?agent_id=...
   A-->>U: { drillId, conversationToken, firstMessage, voiceId, callerId, wallet }
-  U->>E: startSession({ conversationToken, customLlmExtraBody: { drill_id }, userId })
-  E-->>U: speaks the agent's configured dashboard greeting (no LLM call)
+  U->>E: startSession({ conversationToken, dynamicVariables: { first_message: firstMessage }, customLlmExtraBody: { drill_id }, userId })
+  E-->>U: speaks the Director opening via configured {{first_message}} template (no LLM call)
   loop every user turn
     U->>E: speech
     E->>R: POST chat/completions (messages, elevenlabs_extra_body.drill_id, tools incl. end_call)

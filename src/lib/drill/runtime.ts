@@ -91,7 +91,7 @@ export class InMemoryDrillStore implements DrillStore {
 
 export interface CreatedDrill {
   record: DrillRecord;
-  /** Pass to ElevenLabs as overrides.agent.firstMessage. */
+  /** Pass to ElevenLabs as dynamicVariables.first_message. */
   firstMessage: string;
   /** Pass to ElevenLabs as custom LLM extra body / dynamic variable `drill_id`. */
   drillId: string;

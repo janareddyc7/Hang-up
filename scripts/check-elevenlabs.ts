@@ -4,7 +4,7 @@ config({ path: ".env.local", quiet: true });
 
 const AgentSchema = z.object({
   conversation_config: z.object({
-    agent: z.object({ prompt: z.object({ llm: z.string(), custom_llm: z.object({ url: z.url(), api_key: z.unknown().optional() }).nullable(), backup_llm_config: z.object({ preference: z.string() }), built_in_tools: z.object({ end_call: z.unknown().nullable() }) }) }),
+    agent: z.object({ first_message: z.string(), prompt: z.object({ llm: z.string(), custom_llm: z.object({ url: z.url(), api_key: z.unknown().optional() }).nullable(), backup_llm_config: z.object({ preference: z.string() }), built_in_tools: z.object({ end_call: z.unknown().nullable() }) }) }),
     conversation: z.object({ max_duration_seconds: z.number(), client_events: z.array(z.string()) }),
   }),
   platform_settings: z.object({ auth: z.object({ enable_auth: z.boolean() }), privacy: z.object({ record_voice: z.boolean(), retention_days: z.number() }), overrides: z.object({ custom_llm_extra_body: z.boolean(), conversation_config_override: z.object({ agent: z.object({ first_message: z.boolean() }), tts: z.object({ voice_id: z.boolean(), speed: z.boolean() }) }) }) }),
@@ -28,7 +28,8 @@ async function main() {
     "Agent is private": platform.auth.enable_auth,
     "Audio recording off": !platform.privacy.record_voice,
     "Provider retention at most one day": platform.privacy.retention_days >= 0 && platform.privacy.retention_days <= 1,
-    "Required session overrides allowed": overrides.agent.first_message && overrides.tts.voice_id && overrides.tts.speed && platform.overrides.custom_llm_extra_body,
+    "Director opening uses runtime variable": agent.conversation_config.agent.first_message === "{{first_message}}",
+    "Required session overrides allowed": overrides.tts.voice_id && overrides.tts.speed && platform.overrides.custom_llm_extra_body,
     "Captions enabled": ["user_transcript", "agent_response"].every((event) => agent.conversation_config.conversation.client_events.includes(event)),
     "Five-minute provider limit": agent.conversation_config.conversation.max_duration_seconds <= 300,
   };

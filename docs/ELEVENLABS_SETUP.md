@@ -5,7 +5,7 @@ The agent can be configured through the dashboard or authenticated API. `scripts
 ## 1. Agent
 
 - [ ] **Agents → New agent → Blank.** Name it per environment.
-- [ ] **First message:** set a generic practice disclosure for dashboard previews. The app overrides it with the selected Director opening, matching the first stored turn.
+- [ ] **First message:** set exactly `{{first_message}}`. Add a `first_message` dynamic variable placeholder with a generic practice disclosure for dashboard previews. The app supplies the selected Director opening as `dynamicVariables.first_message`, matching the first stored turn. Do not send an `agent.firstMessage` session override: the provider rejected that field on live sessions even when its configuration reported the override enabled.
 - [ ] **System prompt:** one line, e.g. "Responses come from a custom server." (Our route ignores it and builds its own prompt.)
 - [ ] **Language:** English.
 
@@ -34,7 +34,7 @@ Local development: ElevenLabs must reach your laptop. Run a tunnel (`pnpm dlx cl
 ## 5. Security
 
 - [ ] **Enable authentication** (private agent), so sessions need a server-issued conversation token or signed URL.
-- [ ] **Overrides:** allow First message, Voice ID, Speed, and Custom LLM extra body. The app sends these fields and they must be enabled. Leave system prompt, model, and tool overrides off. These settings were verified on the configured agent on 26 October 2026.
+- [ ] **Overrides:** allow Voice ID, Speed, and Custom LLM extra body. The app sends these fields and they must be enabled. The opening uses a dynamic variable. Leave system prompt, model, and tool overrides off.
 - [ ] Add your app domains to the **allowlist**.
 - [ ] Set **maximum conversation duration** to 5 minutes.
 
@@ -65,6 +65,6 @@ Read the ElevenLabs Prohibited Use Policy (elevenlabs.io/use-policy). Our design
 
 `pnpm check:elevenlabs` is read-only: it checks the saved agent settings, each premade voice, and an authenticated no-drill SSE probe at the configured URL. It creates no drill, invokes no model, and uses no voice minutes. To change the endpoint, use `pnpm exec tsx scripts/point-elevenlabs.ts https://<host>/api/llm --apply`; it probes the endpoint before changing it.
 
-The configured app agent now uses `https://hang-up-theta.vercel.app/api/llm`. Browser calls no longer depend on a laptop tunnel. The old six voice IDs returned `voice_not_found`; the current mapping was verified as `premade`. A microphone/audio conversation after the final changes still needs the user's live test.
+The configured app agent uses `https://hang-up-theta.vercel.app/api/llm`. Browser calls no longer depend on a laptop tunnel. The old six voice IDs returned `voice_not_found`; the current mapping was verified as `premade`. On 26 October 2026, a production browser voice check connected, showed the Director's opening, and played unmuted audio with playback time advancing. The check was ended after four seconds and reached a saved replay. This verifies startup and playback; a full spoken exchange was outside that limited check.
 
 ElevenLabs' `simulate-conversation` endpoint is deprecated (removal announced for 31 Oct 2026). Use our local bot harness (`pnpm bots`), which calls `runTurn()` directly, or the newer agent-testing endpoints (`/v1/convai/agent-testing/create`, `/v1/convai/agents/:agent_id/run-tests`) if you want ElevenLabs-side tests.
