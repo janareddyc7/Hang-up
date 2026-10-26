@@ -63,6 +63,10 @@ Read the ElevenLabs Prohibited Use Policy (elevenlabs.io/use-policy). Our design
 
 ## Testing the agent
 
+Browser sessions include a server-signed `session_token` alongside `drill_id` in Custom LLM extra body. It binds callback turns to the trainee without relying on ElevenLabs forwarding `user_id`. Never log this token or the request body.
+
+The signed-in callback path was verified against production on 26 October 2026 using a temporary synthetic drill: a normal opening reply continued through the real ElevenLabs text-only transport, and the redacted turn was persisted. Direct production requests without provider `user_id` continued two normal replies and ended on an explicit hang-up. Synthetic drills were removed after the checks; these checks generated no audio.
+
 `pnpm check:elevenlabs` is read-only: it checks the saved agent settings, each premade voice, and an authenticated no-drill SSE probe at the configured URL. It creates no drill, invokes no model, and uses no voice minutes. To change the endpoint, use `pnpm exec tsx scripts/point-elevenlabs.ts https://<host>/api/llm --apply`; it probes the endpoint before changing it.
 
 The configured app agent uses `https://hang-up-theta.vercel.app/api/llm`. Browser calls no longer depend on a laptop tunnel. The old six voice IDs returned `voice_not_found`; the current mapping was verified as `premade`. On 26 October 2026, a production browser voice check connected, showed the Director's opening, and played unmuted audio with playback time advancing. The check was ended after four seconds and reached a saved replay. This verifies startup and playback; a full spoken exchange was outside that limited check.

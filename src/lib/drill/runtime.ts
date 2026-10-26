@@ -20,6 +20,7 @@ import { classifyMove, writeLine } from "../llm/models";
 import { logDrillEvent } from "../observability/log";
 import { DrillVersionConflict } from "./errors";
 import { assessmentPersona } from "../pilot/costume";
+import { verifyDrillSession } from "./session-token";
 import {
   CustomLlmRequestSchema,
   endCallFrames,
@@ -172,9 +173,14 @@ export async function runTurn(
   const basePersona = record ? deps.personas.get(record.personaId) : undefined;
   const persona = record?.isAssessment && basePersona ? assessmentPersona(basePersona, record.seed) : basePersona;
   const expired = record ? deps.now() - record.startedAtMs > DRILL_TTL_MS : false;
-  // When the drill belongs to a user, the session must carry the same userId (startSession({ userId })).
+  // The signed session carries the owner even when the provider omits user_id.
   const wrongUser = record?.userId != null && input.sessionUserId !== record.userId;
   if (!record || !persona || record.status !== "live" || expired || wrongUser) {
+    if (input.drillId) console.warn(JSON.stringify({
+      event: "drill.binding.rejected",
+      reason: !record ? "missing_drill" : !persona ? "missing_persona" : record.status !== "live" ? "not_live" : expired ? "expired" : "owner_mismatch",
+      timestamp: new Date().toISOString(),
+    }));
     return { kind: "end", reason: "no_active_drill", line: "Sorry, wrong number." };
   }
 
@@ -271,11 +277,17 @@ export async function handleCustomLlmRequest(request: Request, deps: RuntimeDeps
 
   const userText = latestUserText(req) ?? "";
   if (userText.length > 4000) return new Response("reply too long", { status: 400 });
+  const drillId = drillIdFrom(req);
+  const token = req.elevenlabs_extra_body?.["session_token"];
+  const session = typeof token === "string" ? verifyDrillSession(deps.llmSecret, token, deps.now()) : null;
+  if (token !== undefined && (!session || session.drillId !== drillId)) {
+    return sseResponse(endCallFrames(m, "invalid_session", "Please start a new practice call from the app."));
+  }
   try {
     const result = await runTurn(deps, {
-      drillId: drillIdFrom(req),
+      drillId,
       userText,
-      sessionUserId: req.user_id,
+      sessionUserId: session ? session.userId ?? undefined : req.user_id,
     });
     return sseResponse(result.kind === "speak" ? textFrames(m, result.text) : endCallFrames(m, result.reason, result.line));
   } catch {

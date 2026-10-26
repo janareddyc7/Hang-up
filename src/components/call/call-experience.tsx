@@ -195,7 +195,7 @@ export function CallExperience(props: {
           ? { conversationToken: connection.conversationToken }
           : { signedUrl: connection.signedUrl }),
         userId: result.sessionUserId ?? undefined,
-        customLlmExtraBody: { drill_id: result.drillId },
+        customLlmExtraBody: { drill_id: result.drillId, session_token: result.llmSessionToken },
         dynamicVariables: { drill_id: result.drillId, first_message: result.firstMessage },
         textOnly: asText,
         overrides: {

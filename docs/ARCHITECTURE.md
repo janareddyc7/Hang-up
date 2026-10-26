@@ -127,9 +127,9 @@ Request from ElevenLabs (relevant fields):
 ## Drill binding and security
 
 - Drill IDs are 128-bit random (`crypto.randomUUID()` prefixed `drl_`), so they can't be guessed.
-- The route checks `request.user_id` equals the drill's `userId` when the drill has one (pass `userId` to `startSession`).
+- At drill creation the server signs a 15-minute session token containing the drill ID, owner and expiry. The browser passes it as `customLlmExtraBody.session_token`. The route verifies the HMAC and drill ID before checking ownership. This keeps signed-in calls working when ElevenLabs omits `request.user_id`. Legacy callers without a token still need their matching `request.user_id`.
 - A drill accepts turns only while `status = "live"` and for 15 minutes after `startedAt`.
-- `customLlmExtraBody` is client-supplied; treat it as untrusted input (Zod-validated, looked up, never trusted for anything but the lookup).
+- `customLlmExtraBody` is client-supplied; validate it and verify session-token signatures before trusting any identity claims. Tokens cannot authorize a different drill or outlive their expiry.
 
 ## Latency budget (targets to measure, not guarantees)
 

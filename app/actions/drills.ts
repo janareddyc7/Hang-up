@@ -8,7 +8,8 @@ import { assignments, drills, groupSessions, pilotAssessments, tagFlags, turns }
 import { getSession, requireUser } from "@/lib/auth/session";
 import { env } from "@/env";
 import { getRuntimeDeps } from "@/lib/drill/deps";
-import { createDrill, finishDrill as finishRuntimeDrill, runTurn, type DrillRecord } from "@/lib/drill/runtime";
+import { createDrill, DRILL_TTL_MS, finishDrill as finishRuntimeDrill, runTurn, type DrillRecord } from "@/lib/drill/runtime";
+import { mintDrillSession } from "@/lib/drill/session-token";
 import { redact } from "@/lib/engine/wallet";
 import { ensureJudgeSessionHash, hasJudgeSession } from "@/lib/replay/judge-session";
 import type { Difficulty } from "@/lib/engine/schema";
@@ -44,6 +45,7 @@ type StartDrillResult =
       callerIdDisplay: string;
       wallet: Awaited<ReturnType<typeof createDrill>>["record"]["wallet"];
       sessionUserId: string | null;
+      llmSessionToken: string;
     }
   | ActionError;
 
@@ -185,6 +187,7 @@ export async function startDrill(input: unknown): Promise<StartDrillResult> {
       callerIdDisplay: created.callerIdDisplay,
       wallet: created.record.wallet,
       sessionUserId: user?.id ?? null,
+      llmSessionToken: mintDrillSession(deps.llmSecret, { drillId: created.drillId, userId: user?.id ?? null, expiresAt: deps.now() + DRILL_TTL_MS }),
     };
   } catch (error) {
     return { ok: false, error: errorMessage(error) };

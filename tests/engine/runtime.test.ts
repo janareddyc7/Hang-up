@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { createDrill, DRILL_TTL_MS, finishDrill, handleCustomLlmRequest, InMemoryDrillStore, runTurn, type RuntimeDeps } from "../../src/lib/drill/runtime";
 import { DONE_FRAME } from "../../src/lib/llm/sse";
 import { DrillVersionConflict } from "../../src/lib/drill/errors";
+import { mintDrillSession } from "../../src/lib/drill/session-token";
 import { personas } from "../helpers";
 
 const usage = {
@@ -69,6 +70,32 @@ async function chunks(res: Response) {
 }
 
 describe("drill runtime", () => {
+  it("continues a signed-in voice call when the provider omits user_id", async () => {
+    const d = deps({ classifierModel: textModel(JSON.stringify({ move: "question", confidence: 0.95, rationale: "asks what happened" })) });
+    const { drillId } = await createDrill(d, { personaId: "bank-fraud-department", difficulty: "easy", userId: "u1" });
+    const token = mintDrillSession(d.llmSecret, { drillId, userId: "u1", expiresAt: d.now() + DRILL_TTL_MS });
+    const response = await handleCustomLlmRequest(new Request("http://localhost/api/llm/chat/completions", {
+      method: "POST", headers: { authorization: `Bearer ${d.llmSecret}`, "content-type": "application/json" },
+      body: JSON.stringify({ messages: [{ role: "user", content: "Oh no, what happened to my account?" }], elevenlabs_extra_body: { drill_id: drillId, session_token: token } }),
+    }), d);
+    const body = await response.text();
+    expect(body).not.toContain('"name":"end_call"');
+    expect((await d.store.get(drillId))?.status).toBe("live");
+    expect((await d.store.get(drillId))?.turns).toHaveLength(3);
+  });
+
+  it("rejects a signed session token for a different drill", async () => {
+    const d = deps();
+    const { drillId } = await createDrill(d, { personaId: "bank-fraud-department", difficulty: "easy", userId: "u1" });
+    const token = mintDrillSession(d.llmSecret, { drillId: "another-drill", userId: "u1", expiresAt: d.now() + DRILL_TTL_MS });
+    const response = await handleCustomLlmRequest(new Request("http://localhost/api/llm/chat/completions", {
+      method: "POST", headers: { authorization: `Bearer ${d.llmSecret}`, "content-type": "application/json" },
+      body: JSON.stringify({ user_id: "u1", messages: [{ role: "user", content: "hello" }], elevenlabs_extra_body: { drill_id: drillId, session_token: token } }),
+    }), d);
+    expect(await response.text()).toContain("invalid_session");
+    expect((await d.store.get(drillId))?.turns).toHaveLength(1);
+  });
+
   it("rejects requests without the shared secret", async () => {
     const d = deps();
     const { drillId } = await createDrill(d, { personaId: "gov-consumer-safety", difficulty: "realistic", userId: "u1" });
